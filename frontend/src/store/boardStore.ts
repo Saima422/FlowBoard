@@ -43,7 +43,7 @@ interface BoardState {
   ) => Promise<void>;
 }
 
-export const useBoardStore = create<BoardState>((set, get) => ({
+export const useBoardStore = create<BoardState>((set, _get) => ({
   boards: [],
   currentBoard: null,
   lists: [],

@@ -1,0 +1,98 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.auth-container {
+  @include flex-center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $primary-color 0%, #005a8a 100%);
+  padding: $spacing-md;
+}
+
+.auth-card {
+  background: $bg-primary;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  padding: $spacing-xl;
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-title {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+  text-align: center;
+  margin-bottom: $spacing-sm;
+}
+
+.auth-subtitle {
+  font-size: $font-size-lg;
+  color: $text-secondary;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+}
+
+.auth-form {
+  @include flex-column;
+  gap: $spacing-md;
+}
+
+.form-group {
+  @include flex-column;
+  gap: $spacing-xs;
+
+  label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+  }
+
+  input {
+    @include input-base;
+    width: 100%;
+
+    &.error {
+      border-color: $error-color;
+    }
+  }
+
+  .error-message {
+    display: block;
+    color: $error-color;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
+
+.form-actions{
+  display: flex
+  ;
+  margin-top: $spacing-sm;
+      gap: 20px;
+      justify-content: end;
+}
+
+.btn-primary {
+  @include button-primary;
+  font-size: $font-size-base;
+}
+
+.auth-footer {
+  margin-top: $spacing-lg;
+  text-align: center;
+
+  p {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+
+    a {
+      color: $primary-color;
+      font-weight: $font-weight-medium;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+

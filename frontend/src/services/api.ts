@@ -1,13 +1,27 @@
 import axios from '@/lib/axios';
+import { encryptLoginCredentials, encryptRegisterCredentials } from '@/lib/crypto';
 import { AuthResponse, Board, List, Task, User } from '@/types';
 
 // Auth APIs
 export const authApi = {
-  register: (data: { name: string; email: string; password: string; role?: string }) =>
-    axios.post<{ data: AuthResponse }>('/auth/register', data),
+  register: async (data: { name: string; email: string; password: string; role?: string }) => {
+    // Encrypt credentials before sending
+    const encryptedCredentials = await encryptRegisterCredentials(
+      data.name,
+      data.email,
+      data.password
+    );
+    return axios.post<{ data: AuthResponse }>('/auth/register', {
+      ...encryptedCredentials,
+      role: data.role,
+    });
+  },
   
-  login: (data: { email: string; password: string }) =>
-    axios.post<{ data: AuthResponse }>('/auth/login', data),
+  login: async (data: { email: string; password: string }) => {
+    // Encrypt credentials before sending
+    const encryptedCredentials = await encryptLoginCredentials(data.email, data.password);
+    return axios.post<{ data: AuthResponse }>('/auth/login', encryptedCredentials);
+  },
   
   getMe: () =>
     axios.get<{ data: { user: User } }>('/auth/me'),

@@ -1,6 +1,6 @@
 service: taskflow-api
 
-frameworkVersion: '4'
+useDotenv: true
 
 provider:
   name: aws
@@ -14,12 +14,14 @@ provider:
     NODE_ENV: production
     MONGODB_URI: ${env:MONGODB_URI}
     JWT_SECRET: ${env:JWT_SECRET}
-    CORS_ORIGIN: ${env:CORS_ORIGIN, '*'}
+    CORS_ORIGIN: ${env:CORS_ORIGIN}
+    RSA_PUBLIC_KEY: ${env:RSA_PUBLIC_KEY}
+    RSA_PRIVATE_KEY: ${env:RSA_PRIVATE_KEY}
 
   httpApi:
     cors:
       allowedOrigins:
-        - '*'
+        - https://mytaskflow-app.vercel.app
       allowedHeaders:
         - Content-Type
         - Authorization
@@ -30,7 +32,7 @@ provider:
         - DELETE
         - PATCH
         - OPTIONS
-      allowCredentials: false
+      allowCredentials: true
 
 functions:
   api:
@@ -55,6 +57,3 @@ package:
     - '!src/**'
     - '!*.md'
     - '!*.zip'
-
-plugins:
-  - serverless-dotenv-plugin

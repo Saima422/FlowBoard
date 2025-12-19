@@ -2,7 +2,28 @@ import { Response } from 'express';
 import User from '../models/User';
 import { AuthRequest } from '../middleware/auth';
 import { generateToken } from '../utils/jwt';
-import { decryptCredentials, isEncrypted } from '../utils/crypto';
+import { decryptCredentials, isEncrypted, getPublicKeyPem } from '../utils/crypto';
+
+/**
+ * Get public key for client-side credential encryption
+ */
+export const getPublicKey = async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const publicKey = getPublicKeyPem();
+    res.status(200).json({
+      success: true,
+      data: {
+        publicKey,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching public key',
+      error: error.message,
+    });
+  }
+};
 
 export const register = async (req: AuthRequest, res: Response): Promise<void> => {
   try {

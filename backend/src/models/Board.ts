@@ -7,7 +7,6 @@ export interface IMember {
 }
 
 export interface IBoard extends Document {
-  _id: string;
   title: string;
   description?: string;
   owner: mongoose.Types.ObjectId;

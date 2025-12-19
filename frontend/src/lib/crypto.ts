@@ -1,10 +1,8 @@
-// RSA Public Key for encrypting credentials
-// This key is generated using: cd backend && npm run generate-keys
-// Only the PUBLIC key goes here - the private key stays on the server
-const RSA_PUBLIC_KEY = import.meta.env.VITE_RSA_PUBLIC_KEY || '';
+import axios from './axios';
 
-// Cache the parsed CryptoKey
+// Cache the public key (fetched from backend)
 let cachedPublicKey: CryptoKey | null = null;
+let cachedPemKey: string | null = null;
 
 /**
  * Convert PEM formatted public key to CryptoKey
@@ -35,20 +33,28 @@ const pemToPublicKey = async (pem: string): Promise<CryptoKey> => {
 };
 
 /**
- * Get the public key (parsed from environment variable)
+ * Fetch the public key from the backend API
+ */
+const fetchPublicKey = async (): Promise<string> => {
+  const response = await axios.get<{ success: boolean; data: { publicKey: string } }>('/auth/public-key');
+  return response.data.data.publicKey;
+};
+
+/**
+ * Get the public key (fetched from backend and cached)
  */
 const getPublicKey = async (): Promise<CryptoKey> => {
   if (cachedPublicKey) {
     return cachedPublicKey;
   }
 
-  if (!RSA_PUBLIC_KEY) {
-    throw new Error('RSA_PUBLIC_KEY is not configured. Add VITE_RSA_PUBLIC_KEY to your .env file.');
+  // Fetch the public key from backend
+  if (!cachedPemKey) {
+    cachedPemKey = await fetchPublicKey();
+    console.log('🔐 Public key fetched from backend');
   }
 
-  // Convert escaped newlines back to actual newlines
-  const pemKey = RSA_PUBLIC_KEY.replace(/\\n/g, '\n');
-  cachedPublicKey = await pemToPublicKey(pemKey);
+  cachedPublicKey = await pemToPublicKey(cachedPemKey);
   return cachedPublicKey;
 };
 
@@ -120,9 +126,10 @@ export const encryptRegisterCredentials = async (
 };
 
 /**
- * Clear the cached public key (call this if the server restarts)
+ * Clear the cached public key (call this if the server restarts or keys rotate)
  */
 export const clearPublicKeyCache = (): void => {
   cachedPublicKey = null;
+  cachedPemKey = null;
 };
 

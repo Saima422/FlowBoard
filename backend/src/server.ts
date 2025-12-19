@@ -26,7 +26,7 @@ if (process.env.AWS_EXECUTION_ENV === undefined) {
 }
 
 // CORS configuration
-const corsOrigin = process.env.CORS_ORIGIN || '*';
+const corsOrigin = process.env.CORS_ORIGIN ?? "";
 
 const corsOptions: cors.CorsOptions = {
   origin: corsOrigin === '*' 

@@ -1,8 +1,9 @@
 import crypto from 'crypto';
 
-// RSA private key for decryption
+// RSA keys for encryption/decryption
 // MUST be loaded from environment variables
 let privateKey: string;
+let publicKey: string;
 
 /**
  * Initialize RSA key pair from environment variables
@@ -10,18 +11,30 @@ let privateKey: string;
  */
 export const initializeKeyPair = (): void => {
   const envPrivateKey = process.env.RSA_PRIVATE_KEY;
+  const envPublicKey = process.env.RSA_PUBLIC_KEY;
 
-  if (!envPrivateKey) {
+  if (!envPrivateKey || !envPublicKey) {
     throw new Error(
-      '🔐 RSA private key not configured!\n' +
-      '   Generate keys and add RSA_PRIVATE_KEY to your .env file'
+      '🔐 RSA keys not configured!\n' +
+      '   Generate keys and add RSA_PUBLIC_KEY and RSA_PRIVATE_KEY to your .env file'
     );
   }
 
-  // Load key from environment variable
+  // Load keys from environment variables
   // Keys in env are stored with \n replaced by \\n, so we need to convert back
   privateKey = envPrivateKey.replace(/\\n/g, '\n');
-  console.log('🔐 RSA private key loaded from environment variables');
+  publicKey = envPublicKey.replace(/\\n/g, '\n');
+  console.log('🔐 RSA key pair loaded from environment variables');
+};
+
+/**
+ * Get the public key PEM for sharing with clients
+ */
+export const getPublicKeyPem = (): string => {
+  if (!publicKey) {
+    throw new Error('Public key not initialized');
+  }
+  return publicKey;
 };
 
 /**

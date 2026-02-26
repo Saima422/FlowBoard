@@ -1,0 +1,20 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.confirm-modal {
+  max-width: 450px;
+
+  .confirm-message {
+    font-size: $font-size-base;
+    color: $text-primary;
+    line-height: 1.6;
+    margin: $spacing-md 0;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: flex-end;
+  }
+}
+

@@ -1,0 +1,600 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+@use "sass:color";
+
+// Board List Page
+.board-list-container {
+  min-height: 100vh;
+  background-color: $bg-secondary;
+}
+
+.board-list-header {
+  @include flex-between;
+  background-color: $bg-primary;
+  padding: $spacing-md $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  h1 {
+    font-size: $font-size-xxl;
+    color: $text-primary;
+  }
+
+  .header-actions {
+    @include flex-center;
+    gap: $spacing-md;
+
+    .user-name {
+      color: $text-secondary;
+      font-size: $font-size-base;
+    }
+  }
+}
+
+.boards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.board-card {
+  @include card;
+  min-height: 120px;
+  cursor: pointer;
+  transition: all $transition-base;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-md;
+  }
+
+  h3 {
+    font-size: $font-size-lg;
+    color: $text-light;
+    margin-bottom: $spacing-xs;
+  }
+
+  .board-description {
+    font-size: $font-size-sm;
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+.create-board-card {
+  @include flex-center;
+  @include flex-column;
+  background-color: $bg-tertiary;
+  border: 2px dashed $border-color;
+
+  .create-board-icon {
+    font-size: 48px;
+    color: $text-secondary;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    color: $text-secondary;
+    font-weight: $font-weight-medium;
+  }
+
+  &:hover {
+    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+  }
+}
+
+// Board View Page
+.board-view {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: $spacing-md $spacing-lg;
+  backdrop-filter: blur(4px);
+
+  .board-info {
+    @include flex-center;
+    gap: $spacing-md;
+    display: inline-flex;
+    width: 80%;
+
+    h1 {
+      color: $text-light;
+      font-size: $font-size-xxl;
+    }
+  }
+
+  .back-btn {
+    @include button-secondary;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: $text-light;
+    border: none;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+.board-content {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  overflow-x: auto;
+  flex: 1;
+  @include custom-scrollbar;
+}
+
+// List Column
+.list-column {
+  background-color: $bg-tertiary;
+  border-radius: $border-radius;
+  padding: $spacing-md;
+  min-width: 280px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 160px);
+}
+
+.list-header {
+  @include flex-between;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid grey;
+
+  h3 {
+    font-size: $font-size-lg;
+    color: $text-primary;
+    font-weight: $font-weight-bold;
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: $text-secondary;
+    cursor: pointer;
+    padding: 0 $spacing-xs;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $danger-color;
+    }
+  }
+}
+
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  min-height: 200px;
+  padding: $spacing-sm;
+  border-radius: $border-radius-sm;
+  transition: background-color $transition-base;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .task-list-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    font-style: italic;
+    opacity: 0.6;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: $border-radius-sm;
+    padding: $spacing-xl;
+    min-height: 150px;
+  }
+}
+
+// Task Card
+.task-card {
+  @include card;
+  transition: all $transition-base;
+  position: relative;
+  display: flex;
+  gap: $spacing-xs;
+  padding: $spacing-md;
+  padding-left: $spacing-xs;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  &.completed {
+    opacity: 0.7;
+
+    h4 {
+      text-decoration: line-through;
+    }
+  }
+
+  &.dragging {
+    box-shadow: $shadow-lg;
+    opacity: 0.8;
+  }
+
+  .task-card-drag-handle {
+    cursor: grab;
+    color: $text-secondary;
+    font-size: 16px;
+    padding: 0 $spacing-xs;
+    display: flex;
+    align-items: flex-start;
+    user-select: none;
+    line-height: 1;
+    padding-top: 2px;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:hover {
+      color: $text-primary;
+    }
+  }
+
+  .task-card-content {
+    flex: 1;
+    cursor: pointer;
+    position: relative;
+    padding-left: calc($spacing-sm + 4px);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  .task-priority {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  .task-complete-btn {
+    position: absolute;
+    right: $spacing-sm;
+    width: 24px;
+    height: 24px;
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    background-color: $bg-primary;
+    color: $success-color;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all $transition-base;
+    padding: 0;
+    line-height: 1;
+    top: -2px;
+
+    &:hover {
+      border-color: $success-color;
+      background-color: color.adjust($success-color, $alpha: -0.9);
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  h4 {
+    font-size: $font-size-base;
+    color: $text-primary;
+    font-weight: $font-weight-medium;
+    padding-right: $spacing-xl;
+  }
+
+  .task-description {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin-bottom: $spacing-xs;
+    @include truncate;
+  }
+
+  .task-labels {
+    display: flex;
+    gap: $spacing-xs;
+    flex-wrap: wrap;
+    margin-bottom: $spacing-xs;
+
+    .label {
+      background-color: $primary-color;
+      color: $text-light;
+      padding: 2px $spacing-xs;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .task-due-date {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+  }
+}
+
+// Add Task Form
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  background-color: $bg-primary;
+  padding: $spacing-md;
+  border-radius: $border-radius;
+  box-shadow: $shadow-sm;
+
+  input,
+  textarea,
+  select {
+    @include input-base;
+    width: 100%;
+    font-size: $font-size-base;
+    padding: $spacing-sm $spacing-md;
+  }
+
+  input {
+    font-weight: $font-weight-medium;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 70px;
+    font-family: $font-family;
+  }
+
+  select {
+    cursor: pointer;
+    background-color: $bg-primary;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235e6c84' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $spacing-sm center;
+    padding-right: $spacing-xl;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-xs;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+.add-task-btn {
+  @include button-secondary;
+  width: 100%;
+  text-align: left;
+  color: $text-secondary;
+
+  &:hover {
+    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+  }
+}
+
+// Add List
+.add-list-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: $border-radius;
+  padding: $spacing-md;
+  min-width: 280px;
+  max-height: calc(100vh - 160px);
+}
+
+.new-list-form {
+  input {
+    @include input-base;
+    width: 100%;
+    margin-bottom: $spacing-sm;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+}
+
+.add-list-btn {
+  @include button-secondary;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: $text-primary;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+// Button Variants
+.btn-primary-sm,
+.btn-secondary-sm {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-base;
+  border-radius: $border-radius-sm;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-base;
+  min-height: 36px;
+  font-weight: $font-weight-medium;
+}
+
+.btn-primary-sm {
+  background-color: $primary-color;
+  color: $text-light;
+
+  &:hover {
+    background-color: $primary-dark;
+  }
+}
+
+.btn-secondary-sm {
+  background-color: $bg-tertiary;
+  color: $text-primary;
+
+  &:hover {
+    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+  }
+}
+
+.btn-secondary {
+  @include button-secondary;
+}
+
+.btn-danger {
+  @include button-base;
+  background-color: $danger-color;
+  color: $text-light;
+
+  &:hover {
+    background-color: color.adjust($danger-color, $lightness: -10%);
+  }
+}
+
+// Modal
+.modal-overlay {
+  @include flex-center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: $z-index-modal;
+}
+
+.modal {
+  background-color: $bg-primary;
+  border-radius: $border-radius;
+  box-shadow: $shadow-lg;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  @include flex-between;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $border-color;
+
+  h2 {
+    font-size: $font-size-xl;
+    color: $text-primary;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: $text-secondary;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+
+    &:hover {
+      color: $text-primary;
+    }
+  }
+}
+
+.modal-form,
+.modal-body {
+  padding: $spacing-lg;
+
+  .form-group {
+    @include flex-column;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-md;
+
+    label {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $text-primary;
+    }
+
+    input,
+    textarea,
+    select {
+      @include input-base;
+      width: 100%;
+    }
+
+    select {
+      cursor: pointer;
+      background-color: $bg-primary;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+    justify-content: end;
+  }
+}
+
+.task-modal {
+  max-width: 600px;
+
+  .task-detail-description {
+    color: $text-secondary;
+    margin: $spacing-md 0;
+    line-height: 1.6;
+  }
+
+  .task-details {
+    @include flex-column;
+    gap: $spacing-sm;
+    margin: $spacing-lg 0;
+
+    .detail-item {
+      @include flex-between;
+      padding: $spacing-sm;
+      background-color: $bg-secondary;
+      border-radius: $border-radius-sm;
+
+      strong {
+        color: $text-primary;
+      }
+
+      span {
+        color: $text-secondary;
+      }
+    }
+  }
+}

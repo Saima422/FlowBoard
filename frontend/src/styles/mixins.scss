@@ -1,0 +1,142 @@
+@use './variables' as *;
+@use 'sass:color';
+
+// Flexbox mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Button styles
+@mixin button-base {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: none;
+  outline: none;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $primary-color;
+  color: $text-light;
+  
+  &:hover {
+    background-color: $primary-dark;
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: $bg-tertiary;
+  color: $text-primary;
+  
+  &:hover {
+    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+  }
+}
+
+// Input styles
+@mixin input-base {
+  padding: $spacing-sm $spacing-md;
+  border: 2px solid $border-color;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  transition: border-color $transition-base;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+  
+  &::placeholder {
+    color: $text-secondary;
+  }
+}
+
+// Card styles
+@mixin card {
+  background-color: $bg-primary;
+  border-radius: $border-radius;
+  padding: $spacing-md;
+  box-shadow: $shadow-sm;
+}
+
+// Scrollbar styles
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $bg-tertiary;
+    border-radius: $border-radius-sm;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $secondary-color;
+    border-radius: $border-radius-sm;
+    
+    &:hover {
+      background: color.adjust($secondary-color, $lightness: -10%);
+    }
+  }
+}
+
+// Truncate text
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Responsive breakpoints
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: $breakpoint-xs) { @content; }
+  }
+  @else if $breakpoint == sm {
+    @media (max-width: $breakpoint-sm) { @content; }
+  }
+  @else if $breakpoint == md {
+    @media (max-width: $breakpoint-md) { @content; }
+  }
+  @else if $breakpoint == lg {
+    @media (max-width: $breakpoint-lg) { @content; }
+  }
+  @else if $breakpoint == xl {
+    @media (max-width: $breakpoint-xl) { @content; }
+  }
+}
+

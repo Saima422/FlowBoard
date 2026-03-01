@@ -1,0 +1,67 @@
+// Colors
+$primary-color: #0079bf;
+$primary-dark: #026aa7;
+$secondary-color: #5e6c84;
+$success-color: #61bd4f;
+$warning-color: #f2d600;
+$danger-color: #eb5a46;
+$error-color: #eb5a46;
+$info-color: #00c2e0;
+
+// Background colors
+$bg-primary: #ffffff;
+$bg-secondary: #f4f5f7;
+$bg-tertiary: #ebecf0;
+$bg-dark: #091e42;
+
+// Text colors
+$text-primary: #172b4d;
+$text-secondary: #5e6c84;
+$text-light: #ffffff;
+
+// Border colors
+$border-color: #dfe1e6;
+$border-radius: 8px;
+$border-radius-sm: 4px;
+
+// Shadows
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Typography
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+$font-size-sm: 12px;
+$font-size-base: 14px;
+$font-size-lg: 16px;
+$font-size-xl: 20px;
+$font-size-xxl: 24px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 600;
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-base: 0.2s ease;
+$transition-slow: 0.3s ease;
+
+// Z-index
+$z-index-dropdown: 1000;
+$z-index-modal: 2000;
+$z-index-notification: 3000;
+
+// Breakpoints
+$breakpoint-xs: 576px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+$breakpoint-xl: 1400px;
+

@@ -2,10 +2,28 @@ import { Response } from 'express';
 import User from '../models/User';
 import { AuthRequest } from '../middleware/auth';
 import { generateToken } from '../utils/jwt';
+import { decryptCredentials, isEncrypted } from '../utils/crypto';
 
 export const register = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { name, email, password, role } = req.body;
+    let { name, email, password } = req.body;
+    const { role } = req.body;
+
+    // Decrypt credentials if they are encrypted
+    if (isEncrypted(password)) {
+      try {
+        const decrypted = decryptCredentials({ email, password, name });
+        email = decrypted.email;
+        password = decrypted.password;
+        name = decrypted.name || name;
+      } catch (decryptError) {
+        res.status(400).json({
+          success: false,
+          message: 'Failed to decrypt credentials',
+        });
+        return;
+      }
+    }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -84,7 +102,22 @@ export const register = async (req: AuthRequest, res: Response): Promise<void> =
 
 export const login = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+
+    // Decrypt credentials if they are encrypted
+    if (isEncrypted(password)) {
+      try {
+        const decrypted = decryptCredentials({ email, password });
+        email = decrypted.email;
+        password = decrypted.password;
+      } catch (decryptError) {
+        res.status(400).json({
+          success: false,
+          message: 'Failed to decrypt credentials',
+        });
+        return;
+      }
+    }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { connectDatabase } from './config/database';
+import { initializeKeyPair } from './utils/crypto';
 import authRoutes from './routes/auth.routes';
 import boardRoutes from './routes/board.routes';
 import listRoutes from './routes/list.routes';
@@ -12,27 +13,43 @@ import taskRoutes from './routes/task.routes';
 // Load environment variables
 dotenv.config();
 
+// Generate RSA key pair for credential encryption
+initializeKeyPair();
+
 // Create Express app
 const app: Application = express();
 
 // Middleware
-app.use(helmet());
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  credentials: true,
-}));
-app.use(morgan('dev'));
+// Only use helmet in non-Lambda environments
+if (process.env.AWS_EXECUTION_ENV === undefined) {
+  app.use(helmet());
+}
+
+// CORS configuration
+const corsOrigin = process.env.CORS_ORIGIN || '*';
+
+const corsOptions: cors.CorsOptions = {
+  origin: corsOrigin === '*' 
+    ? '*'  // Allow all origins (no credentials)
+    : corsOrigin.split(',').map(o => o.trim()), // Support comma-separated origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  // Only enable credentials if a specific origin is set (not wildcard)
+  credentials: corsOrigin !== '*',
+};
+
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight requests for Lambda
+app.options('*', cors(corsOptions));
+
+// Only use morgan in development
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Health check endpoint
-app.get('/health', (_req, res) => {
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-  });
-});
 
 // API Routes
 app.use('/api/auth', authRoutes);

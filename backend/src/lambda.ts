@@ -1,6 +1,7 @@
 import serverless from 'serverless-http';
 import { app } from './server';
 import { connectDatabase } from './config/database';
+import { getCorsHeaders } from './utils/response';
 
 // Connect to database once (Lambda will reuse connections across invocations)
 let isConnected = false;
@@ -53,7 +54,7 @@ export const handler = async (event: any, context: any) => {
       statusCode: 500,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': process.env.CORS_ORIGIN || '*',
+        ...getCorsHeaders(),
       },
       body: JSON.stringify({
         success: false,

@@ -313,6 +313,7 @@
     color: $text-secondary;
     margin-bottom: $spacing-xs;
     @include truncate;
+    width: 180px;
   }
 
   .task-labels {

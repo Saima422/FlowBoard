@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IList extends Document {
-  _id: string;
   title: string;
   board: mongoose.Types.ObjectId;
   position: number;

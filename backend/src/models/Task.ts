@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ITask extends Document {
-  _id: string;
   title: string;
   description?: string;
   list: mongoose.Types.ObjectId;

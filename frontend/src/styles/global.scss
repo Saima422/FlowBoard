@@ -110,6 +110,11 @@ select {
   margin-top: $spacing-lg;
 }
 
+// Pixel-style headings (use .pixel-font class)
+.pixel-font {
+  font-family: $font-family-pixel;
+}
+
 // Loading spinner
 .spinner {
   @include flex-center;

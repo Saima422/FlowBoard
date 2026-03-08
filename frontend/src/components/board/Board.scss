@@ -46,21 +46,23 @@
   transition: all $transition-base;
   position: relative;
   overflow: hidden;
+  border: 2px solid $border-color;
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: $shadow-md;
+    border-color: $primary-color;
   }
 
   h3 {
     font-size: $font-size-lg;
-    color: $text-light;
+    color: $text-primary;
     margin-bottom: $spacing-xs;
   }
 
   .board-description {
     font-size: $font-size-sm;
-    color: rgba(255, 255, 255, 0.9);
+    color: $text-secondary;
   }
 }
 
@@ -94,9 +96,9 @@
 }
 
 .board-header {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: $bg-tertiary;
   padding: $spacing-md $spacing-lg;
-  backdrop-filter: blur(4px);
+  border-bottom: 2px solid $border-color;
 
   .board-info {
     @include flex-center;
@@ -105,19 +107,34 @@
     width: 80%;
 
     h1 {
-      color: $text-light;
+      color: $text-primary;
       font-size: $font-size-xxl;
     }
   }
 
   .back-btn {
     @include button-secondary;
-    background-color: rgba(255, 255, 255, 0.3);
-    color: $text-light;
-    border: none;
+    border: 2px solid $border-color;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.4);
+      border-color: $primary-color;
+    }
+  }
+}
+
+.playground-banner {
+  padding: $spacing-sm $spacing-lg;
+  background-color: $bg-primary;
+  border-bottom: 2px solid $border-color;
+  font-size: $font-size-sm;
+  color: $text-secondary;
+
+  a {
+    color: $primary-color;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
@@ -135,6 +152,7 @@
 .list-column {
   background-color: $bg-tertiary;
   border-radius: $border-radius;
+  border: 2px solid $border-color;
   padding: $spacing-md;
   min-width: 280px;
   max-width: 280px;
@@ -146,7 +164,7 @@
 .list-header {
   @include flex-between;
   padding-bottom: $spacing-md;
-  border-bottom: 1px solid grey;
+  border-bottom: 2px solid $border-color;
 
   h3 {
     font-size: $font-size-lg;
@@ -183,7 +201,7 @@
   transition: background-color $transition-base;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
   .task-list-empty {
@@ -196,7 +214,7 @@
     font-size: $font-size-sm;
     font-style: italic;
     opacity: 0.6;
-    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border: 2px dashed $border-color;
     border-radius: $border-radius-sm;
     padding: $spacing-xl;
     min-height: 150px;
@@ -323,8 +341,9 @@
     margin-bottom: $spacing-xs;
 
     .label {
-      background-color: $primary-color;
-      color: $text-light;
+      background-color: $bg-primary;
+      color: $text-primary;
+      border: 1px solid $border-color;
       padding: 2px $spacing-xs;
       border-radius: $border-radius-sm;
       font-size: $font-size-sm;
@@ -405,7 +424,8 @@
 
 // Add List
 .add-list-container {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: $bg-tertiary;
+  border: 2px dashed $border-color;
   border-radius: $border-radius;
   padding: $spacing-md;
   min-width: 280px;
@@ -428,11 +448,10 @@
 .add-list-btn {
   @include button-secondary;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  color: $text-primary;
+  border: 2px solid $border-color;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.7);
+    border-color: $primary-color;
   }
 }
 

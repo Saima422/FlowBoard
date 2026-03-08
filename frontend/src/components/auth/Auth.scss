@@ -4,12 +4,13 @@
 .auth-container {
   @include flex-center;
   min-height: 100vh;
-  background: linear-gradient(135deg, $primary-color 0%, #005a8a 100%);
+  background-color: $bg-secondary;
   padding: $spacing-md;
 }
 
 .auth-card {
-  background: $bg-primary;
+  background: $bg-tertiary;
+  border: 2px solid $border-color;
   border-radius: $border-radius;
   box-shadow: $shadow-lg;
   padding: $spacing-xl;
@@ -17,10 +18,19 @@
   max-width: 400px;
 }
 
+.auth-logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto $spacing-md;
+  image-rendering: pixelated;
+}
+
 .auth-title {
-  font-size: $font-size-xxl;
+  font-family: $font-family-pixel;
+  font-size: $font-size-xl;
   font-weight: $font-weight-bold;
-  color: $primary-color;
+  color: $text-primary;
   text-align: center;
   margin-bottom: $spacing-sm;
 }
@@ -62,14 +72,26 @@
     font-size: 12px;
     margin-top: 4px;
   }
+
+  .password-strength {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-top: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+
+    span.met {
+      color: $success-color;
+    }
+  }
 }
 
-.form-actions{
-  display: flex
-  ;
+.form-actions {
+  display: flex;
   margin-top: $spacing-sm;
-      gap: 20px;
-      justify-content: end;
+  gap: $spacing-md;
+  justify-content: flex-end;
 }
 
 .btn-primary {
@@ -86,12 +108,27 @@
     font-size: $font-size-sm;
 
     a {
-      color: $primary-color;
+      color: $text-primary;
       font-weight: $font-weight-medium;
       
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+}
+
+.auth-playground-link {
+  display: block;
+  margin-top: $spacing-md;
+  text-align: center;
+
+  a {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+
+    &:hover {
+      color: $primary-color;
     }
   }
 }

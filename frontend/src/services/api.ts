@@ -4,6 +4,9 @@ import { AuthResponse, Board, List, Task, User } from '@/types';
 
 // Auth APIs
 export const authApi = {
+  checkEmail: (email: string) =>
+    axios.get<{ data: { exists: boolean } }>('/auth/check-email', { params: { email } }),
+
   register: async (data: { name: string; email: string; password: string; role?: string }) => {
     // Encrypt credentials before sending
     const encryptedCredentials = await encryptRegisterCredentials(

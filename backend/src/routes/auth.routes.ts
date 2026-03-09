@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { register, login, getMe, getPublicKey } from '../controllers/auth.controller';
+import { register, login, getMe, getPublicKey, checkEmail } from '../controllers/auth.controller';
 import { authenticate } from '../middleware/auth';
 import { validate } from '../middleware/validation';
 
 const router = Router();
+
+// Check if email exists (for signup)
+router.get('/check-email', checkEmail);
 
 // Get public key for credential encryption
 router.get('/public-key', getPublicKey);

@@ -5,6 +5,42 @@ import { generateToken } from '../utils/jwt';
 import { decryptCredentials, isEncrypted, getPublicKeyPem } from '../utils/crypto';
 
 /**
+ * Check if email is already registered (for signup UX).
+ * Public endpoint; returns { exists: boolean }.
+ */
+export const checkEmail = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const email = (req.query.email as string)?.trim();
+    if (!email) {
+      res.status(400).json({
+        success: true,
+        data: { exists: false },
+      });
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      res.status(200).json({
+        success: true,
+        data: { exists: false },
+      });
+      return;
+    }
+    const existingUser = await User.findOne({ email });
+    res.status(200).json({
+      success: true,
+      data: { exists: !!existingUser },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Error checking email',
+      error: error.message,
+    });
+  }
+};
+
+/**
  * Get public key for client-side credential encryption
  */
 export const getPublicKey = async (_req: AuthRequest, res: Response): Promise<void> => {

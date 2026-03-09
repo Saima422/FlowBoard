@@ -8,6 +8,7 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { login, isLoading } = useAuthStore();
   const navigate = useNavigate();
 
@@ -26,16 +27,28 @@ export const Login = () => {
     setEmailError(validateEmail(email));
   };
 
+  const handlePasswordBlur = () => {
+    if (!password.trim()) {
+      setPasswordError('Password is required');
+    } else {
+      setPasswordError('');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate email before submission
+
     const emailErr = validateEmail(email);
     if (emailErr) {
       setEmailError(emailErr);
       return;
     }
-    
+    if (!password.trim()) {
+      setPasswordError('Password is required');
+      return;
+    }
+    setPasswordError('');
+
     try {
       await login(email, password);
       toast.success('Login successful!');
@@ -48,9 +61,10 @@ export const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1 className="auth-title">TaskFlow</h1>
+        <img src="/logo.svg" alt="FlowBoard" className="auth-logo" />
+        <h1 className="auth-title">FlowBoard</h1>
         <h2 className="auth-subtitle">Log in to continue</h2>
-        
+
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -76,10 +90,16 @@ export const Login = () => {
               id="password"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (passwordError) setPasswordError('');
+              }}
+              onBlur={handlePasswordBlur}
               placeholder="Enter your password"
               required
+              className={passwordError ? 'error' : ''}
             />
+            {passwordError && <span className="error-message">{passwordError}</span>}
           </div>
 
           <button type="submit" className="btn-primary" disabled={isLoading}>
@@ -92,8 +112,10 @@ export const Login = () => {
             Don't have an account? <Link to="/register">Sign up</Link>
           </p>
         </div>
+        <div className="auth-playground-link">
+          <Link to="/playground">Try without account (Playground)</Link>
+        </div>
       </div>
     </div>
   );
 };
-

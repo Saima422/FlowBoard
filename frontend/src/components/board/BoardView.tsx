@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import {
   DndContext,
   DragEndEvent,
@@ -13,7 +13,8 @@ import {
   SortableContext,
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useBoardStore } from "@/store/boardStore";
+import { useBoardStoreContext } from "@/store/BoardStoreContext";
+import { PLAYGROUND_BOARD_ID } from "@/store/playgroundStore";
 import { ListColumn } from "./ListColumn";
 import { TaskCard } from "./TaskCard";
 import { Task } from "@/types";
@@ -21,8 +22,12 @@ import toast from "react-hot-toast";
 import "./Board.scss";
 
 export const BoardView = () => {
-  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const { id: paramId } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const isPlayground = location.pathname === "/playground";
+  const boardId = isPlayground ? PLAYGROUND_BOARD_ID : paramId;
+
   const {
     currentBoard,
     lists,
@@ -31,7 +36,7 @@ export const BoardView = () => {
     createList,
     moveTask,
     isLoading,
-  } = useBoardStore();
+  } = useBoardStoreContext();
 
   const [newListTitle, setNewListTitle] = useState("");
   const [showNewList, setShowNewList] = useState(false);
@@ -47,18 +52,18 @@ export const BoardView = () => {
   );
 
   useEffect(() => {
-    if (id) {
-      fetchBoard(id);
+    if (boardId) {
+      fetchBoard(boardId);
     }
-  }, [id, fetchBoard]);
+  }, [boardId, fetchBoard]);
 
   const handleCreateList = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newListTitle.trim() || !id) return;
+    if (!newListTitle.trim() || !boardId) return;
 
     setIsCreatingList(true);
     try {
-      await createList(newListTitle, id);
+      await createList(newListTitle, boardId);
       setNewListTitle("");
       setShowNewList(false);
       toast.success("List created successfully!");
@@ -147,9 +152,8 @@ export const BoardView = () => {
       }
     } catch (error) {
       toast.error("Failed to move task");
-      // Refresh board to restore correct state
-      if (id) {
-        fetchBoard(id);
+      if (boardId) {
+        fetchBoard(boardId);
       }
     }
   };
@@ -174,13 +178,25 @@ export const BoardView = () => {
         style={{ backgroundColor: currentBoard.backgroundColor }}
       >
         <header className="board-header">
-          <button onClick={() => navigate("/boards")} className="back-btn">
-            ← Back to Boards
+          <button
+            onClick={() => navigate(isPlayground ? "/login" : "/boards")}
+            className="back-btn"
+          >
+            {isPlayground ? "← Back to Login" : "← Back to Boards"}
           </button>
           <div className="board-info">
             <h1>{currentBoard.title}</h1>
           </div>
         </header>
+        {isPlayground && (
+          <div className="playground-banner">
+            <span>Playground – data is saved only for this session and will be lost when you close the tab.</span>
+            <Link to="/register">Sign up</Link>
+            <span> or </span>
+            <Link to="/login">log in</Link>
+            <span> to save boards.</span>
+          </div>
+        )}
 
         <div className="board-content">
           <SortableContext

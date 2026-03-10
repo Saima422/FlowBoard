@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBoardStore } from '@/store/boardStore';
+import { useBoardStoreContext } from '@/store/BoardStoreContext';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
 import './Board.scss';
@@ -10,7 +10,7 @@ export const BoardList = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isCreating, setIsCreating] = useState(false);
-  const { boards, fetchBoards, createBoard, isLoading } = useBoardStore();
+  const { boards, fetchBoards, createBoard, isLoading } = useBoardStoreContext();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ export const BoardList = () => {
   return (
     <div className="board-list-container">
       <header className="board-list-header">
-        <h1>My Boards</h1>
+        <h1>FlowBoard – My Boards</h1>
         <div className="header-actions">
           <span className="user-name">Welcome, {user?.name}</span>
           <button onClick={handleLogout} className="btn-secondary">

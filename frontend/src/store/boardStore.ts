@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { Board, List, Task } from '@/types';
 import { boardApi, listApi, taskApi } from '@/services/api';
 
-interface BoardState {
+export interface BoardState {
   boards: Board[];
   currentBoard: Board | null;
   lists: List[];

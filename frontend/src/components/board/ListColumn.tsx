@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { useBoardStore } from '@/store/boardStore';
+import { useBoardStoreContext } from '@/store/BoardStoreContext';
 import { List, Task } from '@/types';
 import { TaskCard } from './TaskCard';
 import { ConfirmModal } from '../common/ConfirmModal';
@@ -21,7 +21,7 @@ export const ListColumn = ({ list, tasks }: ListColumnProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
-  const { createTask, deleteList } = useBoardStore();
+  const { createTask, deleteList } = useBoardStoreContext();
   const { setNodeRef } = useDroppable({ id: `list-${list._id}` });
 
   const sortedTasks = [...tasks].sort((a, b) => a.position - b.position);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Task } from "@/types";
-import { useBoardStore } from "@/store/boardStore";
+import { useBoardStoreContext } from "@/store/BoardStoreContext";
 import { ConfirmModal } from "../common/ConfirmModal";
 import { format } from "date-fns";
 import clsx from "clsx";
@@ -26,7 +26,7 @@ export const TaskCard = ({ task, isDragging }: TaskCardProps) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isTogglingComplete, setIsTogglingComplete] = useState(false);
-  const { updateTask, deleteTask } = useBoardStore();
+  const { updateTask, deleteTask } = useBoardStoreContext();
 
   const {
     attributes,

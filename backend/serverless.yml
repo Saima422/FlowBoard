@@ -1,10 +1,10 @@
-service: taskflow-api
+service: flowboard-api
 
 useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs22.x
   region: ap-south-1
   stage: ${opt:stage, 'prod'}
   memorySize: 1024
@@ -21,7 +21,8 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
-        - https://mytaskflow-app.vercel.app
+        - ${env:CORS_ORIGIN_1}
+        - ${env:CORS_ORIGIN_2}
       allowedHeaders:
         - Content-Type
         - Authorization

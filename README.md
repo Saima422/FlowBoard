@@ -1,4 +1,4 @@
-# 🎯 TaskFlow
+# FlowBoard
 
 **Streamlined Task & Project Management Platform**
 
@@ -6,7 +6,7 @@ A modern, full-stack task management application with drag-and-drop interface, b
 
 ![Tech Stack](https://img.shields.io/badge/React-18-blue)
 ![Tech Stack](https://img.shields.io/badge/TypeScript-5.3-blue)
-![Tech Stack](https://img.shields.io/badge/Node.js-20-green)
+![Tech Stack](https://img.shields.io/badge/Node.js-22-green)
 ![Tech Stack](https://img.shields.io/badge/MongoDB-7-green)
 ![Tech Stack](https://img.shields.io/badge/AWS-Lambda-orange)
 
@@ -23,7 +23,7 @@ Individuals and teams need a fast, intuitive space to manage tasks and organize 
 
 ## 🎯 Solution
 
-TaskFlow is a Kanban-style task management application that allows users to create boards, organize tasks into lists, and use drag-and-drop to manage their workflow efficiently. Built with modern web technologies and deployed on serverless infrastructure for scalability and cost-effectiveness.
+FlowBoard is a Kanban-style task management application that allows users to create boards, organize tasks into lists, and use drag-and-drop to manage their workflow efficiently. Built with modern web technologies and deployed on serverless infrastructure for scalability and cost-effectiveness.
 
 ## ✨ Key Features
 

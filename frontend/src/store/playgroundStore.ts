@@ -162,13 +162,7 @@ interface PlaygroundState {
   ) => Promise<void>;
 }
 
-export const usePlaygroundStore = create<PlaygroundState>((set, get) => {
-  const persist = () => {
-    const { currentBoard, lists, tasks } = get();
-    if (currentBoard) saveToStorage(currentBoard, lists, tasks);
-  };
-
-  return {
+export const usePlaygroundStore = create<PlaygroundState>((set, get) => ({
     boards: [],
     currentBoard: null,
     lists: [],
@@ -236,7 +230,7 @@ export const usePlaygroundStore = create<PlaygroundState>((set, get) => {
       });
     },
 
-    deleteBoard: async (id) => {
+    deleteBoard: async (_id) => {
       set({ boards: [], currentBoard: null, lists: [], tasks: [] });
       try {
         sessionStorage.removeItem(STORAGE_KEY);
@@ -345,5 +339,4 @@ export const usePlaygroundStore = create<PlaygroundState>((set, get) => {
         return { tasks };
       });
     },
-  };
-});
+}));

@@ -1,44 +1,58 @@
-// Developer-centric theme: black, white, grey, pixelated
+// Theme: all colors reference --color-* CSS variables (see global.scss)
+$primary-color: var(--color-accent);
+$primary-dark: var(--color-accent-hover);
+$secondary-color: var(--color-text-secondary);
+$success-color: var(--color-status-done);
+$warning-color: var(--color-status-doing);
+$danger-color: var(--color-danger);
+$error-color: var(--color-danger);
+$info-color: var(--color-accent);
 
-// Colors (B&W/grey palette)
-$primary-color: #e5e5e5;
-$primary-dark: #a3a3a3;
-$secondary-color: #737373;
-$success-color: #22c55e;
-$warning-color: #eab308;
-$danger-color: #ef4444;
-$error-color: #ef4444;
-$info-color: #3b82f6;
+$bg-page: var(--color-bg-page);
+$bg-surface: var(--color-bg-surface);
+$bg-card: var(--color-bg-card);
+$bg-secondary: var(--color-bg-page);
+$bg-tertiary: var(--color-bg-surface);
+$bg-dark: var(--color-bg-surface);
 
-// Background colors
-$bg-primary: #0d0d0d;
-$bg-secondary: #1a1a1a;
-$bg-tertiary: #262626;
-$bg-dark: #000000;
+$text-primary: var(--color-text-primary);
+$text-secondary: var(--color-text-secondary);
+$text-muted: var(--color-text-muted);
+$text-light: var(--color-text-primary);
 
-// Text colors
-$text-primary: #f5f5f5;
-$text-secondary: #a3a3a3;
-$text-light: #ffffff;
+$border-color: var(--color-border);
+$border-width: 0.5px;
 
-// Border colors
-$border-color: #404040;
-$border-radius: 0;
-$border-radius-sm: 2px;
+// Border radius scale
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
 
-// Shadows (stepped / pixel-style)
-$shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3);
-$shadow-md: 0 2px 0 rgba(0, 0, 0, 0.3), 0 4px 0 rgba(0, 0, 0, 0.2);
-$shadow-lg: 0 4px 0 rgba(0, 0, 0, 0.3), 0 8px 0 rgba(0, 0, 0, 0.2);
+$border-radius: $radius-lg;
+$border-radius-sm: $radius-md;
+
+// Shadows (subtle on dark)
+$shadow-sm: 0 1px 3px rgb(0 0 0 / 0.25);
+$shadow-md: 0 4px 12px rgb(0 0 0 / 0.3);
+$shadow-lg: 0 10px 40px rgb(0 0 0 / 0.4);
 
 // Spacing
 $spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
-$spacing-lg: 24px;
+$spacing-lg: 30px;
 $spacing-xl: 32px;
 
-// Typography: pixel font for headings, system for body
+// Heights
+$navbar-height: 56px;
+$banner-height: 40px;
+$input-height: 48px;
+$button-height: 48px;
+$back-button-height: 36px;
+
+// Typography
 $font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $font-family-pixel: 'Press Start 2P', cursive;
 $font-size-sm: 12px;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useBoardStoreContext } from '@/store/BoardStoreContext';
@@ -7,6 +7,11 @@ import { TaskCard } from './TaskCard';
 import { ConfirmModal } from '../common/ConfirmModal';
 import toast from 'react-hot-toast';
 import './Board.scss';
+
+function toSentenceCase(s: string): string {
+  if (!s || s.length === 0) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
 
 interface ListColumnProps {
   list: List;
@@ -19,10 +24,29 @@ export const ListColumn = ({ list, tasks }: ListColumnProps) => {
   const [taskDescription, setTaskDescription] = useState('');
   const [taskPriority, setTaskPriority] = useState<'low' | 'medium' | 'high'>('medium');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showRenameModal, setShowRenameModal] = useState(false);
+  const [renameValue, setRenameValue] = useState(list.title);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [isDeletingList, setIsDeletingList] = useState(false);
-  const { createTask, deleteList } = useBoardStoreContext();
+  const [isRenamingList, setIsRenamingList] = useState(false);
+  const { createTask, deleteList, updateList } = useBoardStoreContext();
   const { setNodeRef } = useDroppable({ id: `list-${list._id}` });
+
+  useEffect(() => {
+    setRenameValue(list.title);
+  }, [list.title]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const sortedTasks = [...tasks].sort((a, b) => a.position - b.position);
 
@@ -64,23 +88,61 @@ export const ListColumn = ({ list, tasks }: ListColumnProps) => {
     }
   };
 
+  const handleRenameList = async () => {
+    const trimmed = renameValue.trim();
+    if (!trimmed || trimmed === list.title) {
+      setShowRenameModal(false);
+      return;
+    }
+    setIsRenamingList(true);
+    try {
+      await updateList(list._id, { title: trimmed });
+      toast.success('List renamed');
+      setShowRenameModal(false);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Failed to rename list');
+    } finally {
+      setIsRenamingList(false);
+    }
+  };
+
   return (
     <>
       <div className="list-column">
         <div className="list-header">
-          <h3>{list.title}</h3>
-          <button onClick={() => setShowDeleteModal(true)} className="delete-btn" title="Delete list">
-            ×
-          </button>
+          <h3>{toSentenceCase(list.title)}</h3>
+          <span className="list-header-pill">{tasks.length}</span>
+          <div className="list-header-menu-wrap" ref={menuRef}>
+            <button
+              type="button"
+              className="list-header-menu-btn"
+              onClick={() => setMenuOpen((o) => !o)}
+              title="List options"
+              aria-haspopup="true"
+              aria-expanded={menuOpen}
+            >
+              ···
+            </button>
+            {menuOpen && (
+              <div className="list-header-dropdown">
+                <button type="button" onClick={() => { setMenuOpen(false); setShowRenameModal(true); }}>
+                  Rename
+                </button>
+                <button type="button" onClick={() => { setMenuOpen(false); setShowDeleteModal(true); }} className="list-header-dropdown-danger">
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
       <SortableContext items={sortedTasks.map((t) => t._id)} strategy={verticalListSortingStrategy}>
         <div className="task-list" ref={setNodeRef}>
           {sortedTasks.map((task) => (
-            <TaskCard key={task._id} task={task} />
+            <TaskCard key={task._id} task={task} listTitle={list.title} />
           ))}
           {sortedTasks.length === 0 && (
-            <div className="task-list-empty">Drop tasks here</div>
+            <div className="task-list-empty">No cards yet</div>
           )}
         </div>
       </SortableContext>
@@ -111,7 +173,7 @@ export const ListColumn = ({ list, tasks }: ListColumnProps) => {
           </select>
           <div className="form-actions">
             <button type="submit" className="btn-primary-sm" disabled={isAddingTask}>
-              {isAddingTask ? 'Adding...' : 'Add Task'}
+              {isAddingTask ? 'Adding...' : 'Add task'}
             </button>
             <button
               type="button"
@@ -129,23 +191,50 @@ export const ListColumn = ({ list, tasks }: ListColumnProps) => {
           </div>
         </form>
       ) : (
-        <button onClick={() => setShowAddTask(true)} className="add-task-btn">
-          + Add a card
+        <button type="button" onClick={() => setShowAddTask(true)} className="add-task-btn">
+          + Add a task
         </button>
       )}
       </div>
 
       <ConfirmModal
         isOpen={showDeleteModal}
-        title="Delete List"
+        title="Delete list"
         message={`Are you sure you want to delete "${list.title}" and all its tasks? This action cannot be undone.`}
-        confirmText={isDeletingList ? "Deleting..." : "Delete List"}
+        confirmText={isDeletingList ? "Deleting..." : "Delete list"}
         cancelText="Cancel"
         onConfirm={handleDeleteList}
         onCancel={() => setShowDeleteModal(false)}
         isDangerous
         isLoading={isDeletingList}
       />
+
+      {showRenameModal && (
+        <div className="modal-overlay" onClick={() => setShowRenameModal(false)}>
+          <div className="modal modal-rename-list" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Rename list</h2>
+              <button type="button" onClick={() => setShowRenameModal(false)} className="close-btn">×</button>
+            </div>
+            <div className="modal-body">
+              <input
+                type="text"
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleRenameList()}
+                className="rename-list-input"
+                autoFocus
+              />
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowRenameModal(false)} className="btn-secondary-sm">Cancel</button>
+                <button type="button" onClick={handleRenameList} className="btn-primary-sm" disabled={isRenamingList || !renameValue.trim()}>
+                  {isRenamingList ? 'Saving...' : 'Save'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

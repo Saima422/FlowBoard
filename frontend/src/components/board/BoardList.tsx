@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBoardStoreContext } from '@/store/BoardStoreContext';
 import { useAuthStore } from '@/store/authStore';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import toast from 'react-hot-toast';
 import './Board.scss';
 
@@ -53,8 +54,9 @@ export const BoardList = () => {
   return (
     <div className="board-list-container">
       <header className="board-list-header">
-        <h1>FlowBoard – My Boards</h1>
+        <h1>FlowBoard – my boards</h1>
         <div className="header-actions">
+          <ThemeToggle />
           <span className="user-name">Welcome, {user?.name}</span>
           <button onClick={handleLogout} className="btn-secondary">
             Logout

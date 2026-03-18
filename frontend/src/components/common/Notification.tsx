@@ -7,22 +7,22 @@ export const Notification = () => {
       toastOptions={{
         duration: 5000,
         style: {
-          background: '#fff',
-          color: '#172b4d',
+          background: 'var(--color-bg-card)',
+          color: 'var(--color-text-primary)',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           borderRadius: '8px',
           padding: '16px',
         },
         success: {
           iconTheme: {
-            primary: '#61bd4f',
-            secondary: '#fff',
+            primary: 'var(--color-status-done)',
+            secondary: 'var(--color-bg-card)',
           },
         },
         error: {
           iconTheme: {
-            primary: '#eb5a46',
-            secondary: '#fff',
+            primary: 'var(--color-danger)',
+            secondary: 'var(--color-bg-card)',
           },
         },
       }}

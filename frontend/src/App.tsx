@@ -8,6 +8,7 @@ import { BoardList } from './components/board/BoardList';
 import { BoardView } from './components/board/BoardView';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { Notification } from './components/common/Notification';
+import { RouteTransitionLoader } from './components/common/RouteTransitionLoader';
 import './styles/global.scss';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       <BoardStoreProvider>
+        <RouteTransitionLoader />
         <Notification />
         <Routes>
           <Route

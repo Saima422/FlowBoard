@@ -21,6 +21,8 @@ provider:
   httpApi:
     cors:
       allowedOrigins:
+        - http://localhost:4000
+        - http://localhost:5173
         - ${env:CORS_ORIGIN_1}
         - ${env:CORS_ORIGIN_2}
       allowedHeaders:

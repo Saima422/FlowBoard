@@ -15,11 +15,17 @@ import {
 } from "@dnd-kit/sortable";
 import { useBoardStoreContext } from "@/store/BoardStoreContext";
 import { PLAYGROUND_BOARD_ID } from "@/store/playgroundStore";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { ListColumn } from "./ListColumn";
 import { TaskCard } from "./TaskCard";
 import { Task } from "@/types";
 import toast from "react-hot-toast";
 import "./Board.scss";
+
+function toSentenceCase(s: string): string {
+  if (!s || s.length === 0) return s;
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
 
 export const BoardView = () => {
   const location = useLocation();
@@ -178,23 +184,21 @@ export const BoardView = () => {
         style={{ backgroundColor: currentBoard.backgroundColor }}
       >
         <header className="board-header">
-          <button
-            onClick={() => navigate(isPlayground ? "/login" : "/boards")}
-            className="back-btn"
-          >
-            {isPlayground ? "← Back to Login" : "← Back to Boards"}
-          </button>
-          <div className="board-info">
-            <h1>{currentBoard.title}</h1>
+          <div className="board-header-left">
+            <button
+              onClick={() => navigate(isPlayground ? "/login" : "/boards")}
+              className="back-btn"
+            >
+              {isPlayground ? "← Back to login" : "← Back to boards"}
+            </button>
+            <span className="board-title-inline">{toSentenceCase(currentBoard.title)}</span>
           </div>
+          <ThemeToggle />
         </header>
         {isPlayground && (
           <div className="playground-banner">
-            <span>Playground – data is saved only for this session and will be lost when you close the tab.</span>
-            <Link to="/register">Sign up</Link>
-            <span> or </span>
-            <Link to="/login">log in</Link>
-            <span> to save boards.</span>
+            <span className="playground-banner-text">Playground mode — data is not saved when you close this tab.</span>
+            <Link to="/register" className="playground-banner-link">Sign up to save →</Link>
           </div>
         )}
 
@@ -212,7 +216,7 @@ export const BoardView = () => {
             ))}
           </SortableContext>
 
-          <div className="add-list-container">
+          <div className={`add-list-container${showNewList ? ' add-list-container--form' : ''}`}>
             {showNewList ? (
               <form onSubmit={handleCreateList} className="new-list-form">
                 <input
@@ -224,7 +228,7 @@ export const BoardView = () => {
                 />
                 <div className="form-actions">
                   <button type="submit" className="btn-primary" disabled={isCreatingList}>
-                    {isCreatingList ? "Adding..." : "Add List"}
+                    {isCreatingList ? "Adding..." : "Add list"}
                   </button>
                   <button
                     type="button"
@@ -241,6 +245,7 @@ export const BoardView = () => {
               </form>
             ) : (
               <button
+                type="button"
                 onClick={() => setShowNewList(true)}
                 className="add-list-btn"
               >

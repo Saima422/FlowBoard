@@ -1,5 +1,4 @@
 @use './variables' as *;
-@use 'sass:color';
 
 // Flexbox mixins
 @mixin flex-center {
@@ -22,7 +21,7 @@
 // Button styles
 @mixin button-base {
   padding: $spacing-sm $spacing-md;
-  border-radius: $border-radius-sm;
+  border-radius: $radius-md;
   font-size: $font-size-base;
   font-weight: $font-weight-medium;
   cursor: pointer;
@@ -48,13 +47,13 @@
 
 @mixin button-primary {
   @include button-base;
-  background-color: $bg-primary;
-  color: $text-primary;
-  border: 2px solid $primary-color;
-  
+  background-color: $primary-color;
+  color: #FFFFFF;
+  border: $border-width solid $primary-dark;
+
   &:hover {
-    background-color: $primary-color;
-    color: $bg-primary;
+    background-color: $primary-dark;
+    color: #FFFFFF;
   }
 }
 
@@ -62,26 +61,30 @@
   @include button-base;
   background-color: $bg-tertiary;
   color: $text-primary;
-  border: 2px solid $border-color;
-  
+  border: $border-width solid $border-color;
+
   &:hover {
     border-color: $primary-color;
+    opacity: 0.9;
   }
 }
 
 // Input styles
 @mixin input-base {
-  padding: $spacing-sm $spacing-md;
-  border: 2px solid $border-color;
-  border-radius: $border-radius-sm;
-  font-size: $font-size-base;
+  padding: 0 16px;
+  height: $input-height;
+  border: $border-width solid $border-color;
+  border-radius: $radius-md;
+  font-size: 15px;
+  background-color: $bg-card;
+  color: $text-primary;
   transition: border-color $transition-base;
-  
+
   &:focus {
     outline: none;
     border-color: $primary-color;
   }
-  
+
   &::placeholder {
     color: $text-secondary;
   }
@@ -89,9 +92,9 @@
 
 // Card styles
 @mixin card {
-  background-color: $bg-secondary;
-  border-radius: $border-radius;
-  border: 2px solid $border-color;
+  background-color: $bg-card;
+  border-radius: $radius-lg;
+  border: $border-width solid $border-color;
   padding: $spacing-md;
   box-shadow: $shadow-sm;
 }
@@ -105,15 +108,15 @@
   
   &::-webkit-scrollbar-track {
     background: $bg-tertiary;
-    border-radius: $border-radius-sm;
+    border-radius: $radius-md;
   }
   
   &::-webkit-scrollbar-thumb {
     background: $secondary-color;
-    border-radius: $border-radius-sm;
+    border-radius: $radius-md;
     
     &:hover {
-      background: color.adjust($secondary-color, $lightness: -10%);
+      opacity: 0.85;
     }
   }
 }
@@ -143,4 +146,3 @@
     @media (max-width: $breakpoint-xl) { @content; }
   }
 }
-

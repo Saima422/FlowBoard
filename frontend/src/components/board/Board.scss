@@ -1,6 +1,5 @@
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
-@use "sass:color";
 
 // Board List Page
 .board-list-container {
@@ -10,8 +9,10 @@
 
 .board-list-header {
   @include flex-between;
-  background-color: $bg-primary;
-  padding: $spacing-md $spacing-lg;
+  background-color: $bg-surface;
+  height: $navbar-height;
+  padding: 0 24px;
+  border-bottom: $border-width solid $border-color;
   box-shadow: $shadow-sm;
 
   h1 {
@@ -24,8 +25,9 @@
     gap: $spacing-md;
 
     .user-name {
-      color: $text-secondary;
-      font-size: $font-size-base;
+      color: $text-primary;
+      opacity: 0.9;
+      font-size: 15px;
     }
   }
 }
@@ -46,7 +48,7 @@
   transition: all $transition-base;
   position: relative;
   overflow: hidden;
-  border: 2px solid $border-color;
+  border: $border-width solid $border-color;
 
   &:hover {
     transform: translateY(-2px);
@@ -61,7 +63,7 @@
   }
 
   .board-description {
-    font-size: $font-size-sm;
+    font-size: 14px;
     color: $text-secondary;
   }
 }
@@ -70,7 +72,7 @@
   @include flex-center;
   @include flex-column;
   background-color: $bg-tertiary;
-  border: 2px dashed $border-color;
+  border: $border-width dashed $border-color;
 
   .create-board-icon {
     font-size: 48px;
@@ -81,10 +83,12 @@
   p {
     color: $text-secondary;
     font-weight: $font-weight-medium;
+    font-size: 15px;
   }
 
   &:hover {
-    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+    background-color: $bg-card;
+    opacity: 0.92;
   }
 }
 
@@ -96,42 +100,73 @@
 }
 
 .board-header {
-  background-color: $bg-tertiary;
-  padding: $spacing-md $spacing-lg;
-  border-bottom: 2px solid $border-color;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  background-color: var(--color-bg-surface);
+  height: $navbar-height;
+  padding: 0 24px;
+  border-bottom: 0.5px solid var(--color-border);
 
-  .board-info {
-    @include flex-center;
-    gap: $spacing-md;
-    display: inline-flex;
-    width: 80%;
+  .board-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
 
-    h1 {
-      color: $text-primary;
-      font-size: $font-size-xxl;
-    }
+  .board-title-inline {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: $text-primary;
+    font-size: 20px !important;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
   .back-btn {
-    @include button-secondary;
-    border: 2px solid $border-color;
+    height: $back-button-height;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: 400;
+    background: transparent;
+    color: $text-primary;
+    border: 0.5px solid var(--color-border);
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: border-color $transition-base, color $transition-base;
 
     &:hover {
       border-color: $primary-color;
+      color: $primary-color;
     }
   }
 }
 
 .playground-banner {
-  padding: $spacing-sm $spacing-lg;
-  background-color: $bg-primary;
-  border-bottom: 2px solid $border-color;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: $banner-height;
+  padding: 0 24px;
+  background-color: var(--color-bg-banner);
+  border-bottom: $border-width solid $border-color;
 
-  a {
-    color: $primary-color;
-    font-weight: $font-weight-medium;
+  .playground-banner-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .playground-banner-link {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-accent);
+    white-space: nowrap;
+    margin-left: auto;
 
     &:hover {
       text-decoration: underline;
@@ -141,95 +176,163 @@
 
 .board-content {
   display: flex;
-  gap: $spacing-md;
+  gap: 30px;
   padding: $spacing-lg;
   overflow-x: auto;
   flex: 1;
+  align-items: flex-start;
   @include custom-scrollbar;
 }
 
 // List Column
 .list-column {
   background-color: $bg-tertiary;
-  border-radius: $border-radius;
-  border: 2px solid $border-color;
-  padding: $spacing-md;
-  min-width: 280px;
-  max-width: 280px;
+  border-radius: $radius-lg;
+  border: $border-width solid $border-color;
+  padding: 16px;
+  min-width: 330px;
+  max-width: 330px;
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 160px);
+  // height: auto;
 }
 
 .list-header {
   @include flex-between;
-  padding-bottom: $spacing-md;
-  border-bottom: 2px solid $border-color;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: $border-width solid $border-color;
+  gap: $spacing-sm;
 
   h3 {
-    font-size: $font-size-lg;
+    font-size: 15px;
+    font-weight: 600;
     color: $text-primary;
-    font-weight: $font-weight-bold;
+    flex: 1;
+    min-width: 0;
   }
 
-  .delete-btn {
+  .list-header-pill {
+    background: var(--color-bg-card);
+    color: var(--color-accent);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: $radius-xs;
+  }
+
+  .list-header-menu-wrap {
+    position: relative;
+  }
+
+  .list-header-menu-btn {
     background: none;
     border: none;
-    font-size: 24px;
+    padding: 0 $spacing-xs;
+    font-size: 20px;
+    line-height: 1;
     color: $text-secondary;
     cursor: pointer;
-    padding: 0 $spacing-xs;
+    border-radius: $radius-sm;
     transition: color $transition-fast;
 
     &:hover {
-      color: $danger-color;
+      color: $text-primary;
+    }
+  }
+
+  .list-header-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 2px;
+    min-width: 140px;
+    background: var(--color-bg-card);
+    border: $border-width solid $border-color;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    z-index: $z-index-dropdown;
+    padding: $spacing-xs;
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px $spacing-md;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: $text-primary;
+      cursor: pointer;
+      border-radius: $radius-sm;
+
+      &:hover {
+        background: var(--color-bg-surface);
+      }
+
+      &.list-header-dropdown-danger:hover {
+        color: $danger-color;
+      }
     }
   }
 }
 
 .task-list {
-  flex: 1;
   overflow-y: auto;
   @include custom-scrollbar;
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm;
-  margin-bottom: $spacing-md;
-  min-height: 200px;
+  gap: 10px;
+  margin-bottom: 16px;
+  // min-height: 200px;
   padding: $spacing-sm;
-  border-radius: $border-radius-sm;
+  border-radius: $radius-md;
   transition: background-color $transition-base;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--color-surface-hover);
   }
+}
 
-  .task-list-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    color: $text-secondary;
-    font-size: $font-size-sm;
-    font-style: italic;
-    opacity: 0.6;
-    border: 2px dashed $border-color;
-    border-radius: $border-radius-sm;
-    padding: $spacing-xl;
-    min-height: 150px;
-  }
+.task-list-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  border: 0.5px dashed var(--color-border);
+  border-radius: $radius-sm;
+  padding: 16px;
 }
 
 // Task Card
 .task-card {
-  @include card;
+  background-color: var(--color-bg-card);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
   transition: all $transition-base;
   position: relative;
   display: flex;
-  gap: $spacing-xs;
-  padding: $spacing-md;
-  padding-left: $spacing-xs;
+  gap: 6px;
+  padding: 14px 16px;
+  padding-left: 6px;
+  border: 0.5px solid var(--color-border);
+  border-left-width: 3px;
+  border-left-style: solid;
+  border-left-color: var(--color-status-todo);
+
+  &[data-status="todo"] {
+    border-left-color: var(--color-status-todo);
+  }
+
+  &[data-status="doing"] {
+    border-left-color: var(--color-status-doing);
+  }
+
+  &[data-status="done"] {
+    border-left-color: var(--color-status-done);
+  }
 
   &:hover {
     box-shadow: $shadow-md;
@@ -238,6 +341,13 @@
 
   &.completed {
     opacity: 0.7;
+    background-color: var(--color-bg-surface);
+    border-left-color: var(--color-status-done);
+
+    h4,
+    .task-description {
+      color: var(--color-text-muted);
+    }
 
     h4 {
       text-decoration: line-through;
@@ -285,17 +395,17 @@
     top: 0;
     bottom: 0;
     width: 4px;
-    border-radius: $border-radius 0 0 $border-radius;
+    border-radius: $radius-lg 0 0 $radius-lg;
   }
 
   .task-complete-btn {
     position: absolute;
     right: $spacing-sm;
-    width: 24px;
-    height: 24px;
-    border: 2px solid $border-color;
+    width: 26px;
+    height: 26px;
+    border: $border-width solid $border-color;
     border-radius: 50%;
-    background-color: $bg-primary;
+    background-color: $bg-surface;
     color: $success-color;
     font-size: 16px;
     font-weight: bold;
@@ -310,7 +420,7 @@
 
     &:hover {
       border-color: $success-color;
-      background-color: color.adjust($success-color, $alpha: -0.9);
+      background-color: var(--color-success-subtle);
       transform: scale(1.1);
     }
 
@@ -320,18 +430,19 @@
   }
 
   h4 {
-    font-size: $font-size-base;
+    font-size: 14px;
+    font-weight: 500;
     color: $text-primary;
-    font-weight: $font-weight-medium;
     padding-right: $spacing-xl;
   }
 
   .task-description {
-    font-size: $font-size-sm;
+    font-size: 13px;
+    font-weight: 400;
     color: $text-secondary;
     margin-bottom: $spacing-xs;
     @include truncate;
-    width: 180px;
+    width: 200px;
   }
 
   .task-labels {
@@ -341,17 +452,18 @@
     margin-bottom: $spacing-xs;
 
     .label {
-      background-color: $bg-primary;
+      background-color: $bg-tertiary;
       color: $text-primary;
-      border: 1px solid $border-color;
-      padding: 2px $spacing-xs;
-      border-radius: $border-radius-sm;
-      font-size: $font-size-sm;
+      border: $border-width solid $border-color;
+      padding: 3px 8px;
+      border-radius: $radius-xs;
+      font-size: 13px;
     }
   }
 
   .task-due-date {
-    font-size: $font-size-sm;
+    font-size: 13px;
+    font-weight: 400;
     color: $text-secondary;
   }
 }
@@ -361,9 +473,9 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
-  background-color: $bg-primary;
-  padding: $spacing-md;
-  border-radius: $border-radius;
+  background-color: $bg-card;
+  padding: 16px;
+  border-radius: $radius-lg;
   box-shadow: $shadow-sm;
 
   input,
@@ -371,8 +483,6 @@
   select {
     @include input-base;
     width: 100%;
-    font-size: $font-size-base;
-    padding: $spacing-sm $spacing-md;
   }
 
   input {
@@ -383,11 +493,13 @@
     resize: vertical;
     min-height: 70px;
     font-family: $font-family;
+    height: auto;
+    padding: $spacing-sm 16px;
   }
 
   select {
     cursor: pointer;
-    background-color: $bg-primary;
+    background-color: $bg-card;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235e6c84' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -412,24 +524,34 @@
 }
 
 .add-task-btn {
-  @include button-secondary;
   width: 100%;
   text-align: left;
-  color: $text-secondary;
+  padding: 10px $spacing-md;
+  font-size: 14px;
+  background: transparent;
+  color: $text-primary;
+  border: 0.5px solid var(--color-border);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: border-color $transition-base, color $transition-base;
 
   &:hover {
-    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 }
 
 // Add List
 .add-list-container {
-  background-color: $bg-tertiary;
-  border: 2px dashed $border-color;
-  border-radius: $border-radius;
-  padding: $spacing-md;
-  min-width: 280px;
-  max-height: calc(100vh - 160px);
+  align-self: flex-start;
+
+  &.add-list-container--form {
+    background-color: $bg-tertiary;
+    border: $border-width solid $border-color;
+    border-radius: $radius-lg;
+    padding: 16px;
+    min-width: 300px;
+  }
 }
 
 .new-list-form {
@@ -446,12 +568,25 @@
 }
 
 .add-list-btn {
-  @include button-secondary;
-  width: 100%;
-  border: 2px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: auto;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  background: none;
+  border: 0.5px dashed var(--color-border);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: border-color $transition-base, color $transition-base;
+  white-space: nowrap;
 
   &:hover {
-    border-color: $primary-color;
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 }
 
@@ -459,30 +594,32 @@
 .btn-primary-sm,
 .btn-secondary-sm {
   padding: $spacing-sm $spacing-md;
-  font-size: $font-size-base;
-  border-radius: $border-radius-sm;
+  font-size: 14px;
+  border-radius: $radius-md;
   border: none;
   cursor: pointer;
   transition: all $transition-base;
-  min-height: 36px;
+  min-height: 38px;
   font-weight: $font-weight-medium;
 }
 
 .btn-primary-sm {
   background-color: $primary-color;
-  color: $text-light;
+  color: #FFFFFF;
 
   &:hover {
     background-color: $primary-dark;
+    color: #FFFFFF;
   }
 }
 
 .btn-secondary-sm {
-  background-color: $bg-tertiary;
+  background-color: $bg-surface;
   color: $text-primary;
 
   &:hover {
-    background-color: color.adjust($bg-tertiary, $lightness: -5%);
+    background-color: $bg-card;
+    opacity: 0.9;
   }
 }
 
@@ -493,10 +630,10 @@
 .btn-danger {
   @include button-base;
   background-color: $danger-color;
-  color: $text-light;
+  color: #FFFFFF;
 
   &:hover {
-    background-color: color.adjust($danger-color, $lightness: -10%);
+    opacity: 0.9;
   }
 }
 
@@ -508,16 +645,16 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--color-overlay);
   z-index: $z-index-modal;
 }
 
 .modal {
-  background-color: $bg-primary;
-  border-radius: $border-radius;
+  background-color: $bg-card;
+  border-radius: $radius-lg;
   box-shadow: $shadow-lg;
   width: 90%;
-  max-width: 500px;
+  max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -525,7 +662,7 @@
 .modal-header {
   @include flex-between;
   padding: $spacing-md $spacing-lg;
-  border-bottom: 1px solid $border-color;
+  border-bottom: $border-width solid $border-color;
 
   h2 {
     font-size: $font-size-xl;
@@ -553,11 +690,11 @@
 
   .form-group {
     @include flex-column;
-    gap: $spacing-xs;
+    gap: 6px;
     margin-bottom: $spacing-md;
 
     label {
-      font-size: $font-size-sm;
+      font-size: 14px;
       font-weight: $font-weight-medium;
       color: $text-primary;
     }
@@ -571,7 +708,7 @@
 
     select {
       cursor: pointer;
-      background-color: $bg-primary;
+      background-color: $bg-card;
 
       &:focus {
         outline: none;
@@ -588,13 +725,22 @@
   }
 }
 
+.modal-rename-list {
+  .rename-list-input {
+    @include input-base;
+    width: 100%;
+    margin-bottom: $spacing-md;
+  }
+}
+
 .task-modal {
-  max-width: 600px;
+  max-width: 620px;
 
   .task-detail-description {
     color: $text-secondary;
     margin: $spacing-md 0;
     line-height: 1.6;
+    font-size: 15px;
   }
 
   .task-details {
@@ -604,9 +750,10 @@
 
     .detail-item {
       @include flex-between;
-      padding: $spacing-sm;
-      background-color: $bg-secondary;
-      border-radius: $border-radius-sm;
+      padding: 10px 12px;
+      background-color: $bg-surface;
+      border-radius: $radius-sm;
+      font-size: 14px;
 
       strong {
         color: $text-primary;

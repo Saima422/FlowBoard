@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import toast from 'react-hot-toast';
-import './Auth.scss';
+import { AuthLayout } from './AuthLayout';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -59,10 +59,19 @@ export const Login = () => {
   };
 
   return (
-    <div className="auth-container">
+    <AuthLayout>
       <div className="auth-card">
-        <img src="/logo.svg" alt="FlowBoard" className="auth-logo" />
-        <h1 className="auth-title">FlowBoard</h1>
+        <div className="auth-logo-row">
+          <span className="auth-logo-icon" aria-hidden>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="20" height="20" rx="4" fill="var(--color-accent)" />
+              <rect x="5" y="6" width="2" height="8" rx="1" fill="white" />
+              <rect x="9" y="4" width="2" height="12" rx="1" fill="white" />
+              <rect x="13" y="7" width="2" height="6" rx="1" fill="white" />
+            </svg>
+          </span>
+          <h1 className="auth-title">FlowBoard</h1>
+        </div>
         <h2 className="auth-subtitle">Log in to continue</h2>
 
         <form onSubmit={handleSubmit} className="auth-form">
@@ -112,10 +121,18 @@ export const Login = () => {
             Don't have an account? <Link to="/register">Sign up</Link>
           </p>
         </div>
-        <div className="auth-playground-link">
-          <Link to="/playground">Try without account (Playground)</Link>
+
+        <div className="auth-or-divider">
+          <span>or</span>
         </div>
+        <button
+          type="button"
+          className="auth-playground-btn"
+          onClick={() => navigate('/playground')}
+        >
+          Try playground (no account)
+        </button>
       </div>
-    </div>
+    </AuthLayout>
   );
 };

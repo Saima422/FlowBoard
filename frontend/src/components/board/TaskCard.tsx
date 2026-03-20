@@ -12,9 +12,20 @@ import "./Board.scss";
 interface TaskCardProps {
   task: Task;
   isDragging?: boolean;
+  listTitle?: string;
 }
 
-export const TaskCard = ({ task, isDragging }: TaskCardProps) => {
+function getStatusFromListTitle(listTitle?: string): "todo" | "doing" | "done" {
+  if (!listTitle) return "todo";
+  const t = listTitle.toLowerCase();
+  if (t === "to do") return "todo";
+  if (t === "in progress") return "doing";
+  if (t === "done") return "done";
+  return "todo";
+}
+
+export const TaskCard = ({ task, isDragging, listTitle }: TaskCardProps) => {
+  const status = getStatusFromListTitle(listTitle);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -91,13 +102,13 @@ export const TaskCard = ({ task, isDragging }: TaskCardProps) => {
   const getPriorityColor = () => {
     switch (task.priority) {
       case "high":
-        return "#eb5a46";
+        return "var(--color-priority-high)";
       case "medium":
-        return "#f2d600";
+        return "var(--color-priority-medium)";
       case "low":
-        return "#61bd4f";
+        return "var(--color-priority-low)";
       default:
-        return "#5e6c84";
+        return "var(--color-priority-low)";
     }
   };
 
@@ -126,6 +137,7 @@ export const TaskCard = ({ task, isDragging }: TaskCardProps) => {
         style={style}
         {...attributes}
         className={clsx("task-card", { completed: task.isCompleted })}
+        data-status={status}
       >
         <div className="task-card-drag-handle" {...listeners}>
           ⋮⋮
